@@ -1,39 +1,64 @@
 package demo;
-class A{
-    int a;
-    A(){
-        System.out.println("A()");
-    }
-    A(int i){
-        System.out.println("A(int)");
-    }
-    A(int i, int j){
-        System.out.println("A(int,int)");
-    }
-    public void printA(){
-        System.out.println("print A : "+a);
+
+import java.util.Random;
+
+class Alarm{
+    public void operateAlarm(int waterLevel){
+        System.out.println(waterLevel>=50 ? "Alarm ON":"Alarm OFF");
     }
 }
-class B extends A{
-    int b;
-    B(){
-        super();
-        System.out.println("B()");
-    }
-    B(int i){
-        super(i);
-        System.out.println("B(int)");
-    }
-    B(int i, int j){
-        super(i,j);
-        System.out.println("B(int,int)");
-    }
-    public void printB(){
-        System.out.println("print B : "+b);
+class Display{
+    public void display(int waterLevel){
+        System.out.println("WaterLevel : "+waterLevel);
     }
 }
-class Demo{
-    public static void main(String[] args) {
-        new B(10);
-    }   
+class SMSSender{
+    public void sendSMS(int waterLevel){
+        System.out.println("Sending SMS..."+waterLevel);
+    }
+}
+class ControlRoom{
+    private Alarm alarm;
+    private Display display;
+    private SMSSender sMSSender;
+    
+    private int waterLevel;
+    
+
+    public void addAlarm(Alarm alarm){
+        this.alarm=alarm;
+    }
+    public void addDisplay(Display display){
+        this.display=display;
+    }
+    public void addSMSSender(SMSSender sMSSender){
+        this.sMSSender=sMSSender;
+    }
+    
+    public void setWaterLevel(int waterLevel){
+        if(this.waterLevel!=waterLevel){
+            this.waterLevel=waterLevel;
+        }
+        notifyDevices();
+    }
+    public void notifyDevices(){
+        alarm.operateAlarm(waterLevel);
+        display.display(waterLevel);
+        sMSSender.sendSMS(waterLevel);
+    }
+}
+public class Demo {
+    public static void main(String[] args) throws InterruptedException{
+        ControlRoom controlRoom=new ControlRoom();
+        controlRoom.addAlarm(new Alarm());
+        controlRoom.addDisplay(new Display());
+        controlRoom.addSMSSender(new SMSSender());
+        
+        Random r=new Random();
+        while(true){
+            int waterLevel=r.nextInt(101);
+            controlRoom.setWaterLevel(waterLevel);
+            Thread.sleep(1000);
+        }
+    }
 }

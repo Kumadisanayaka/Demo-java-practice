@@ -17,10 +17,16 @@ class SMSSender{
         System.out.println("Sending SMS..."+waterLevel);
     }
 }
+class Spliter{
+    public void operateSpliter(int waterLevel){
+        System.out.println(waterLevel >= 75 ? "Spliter ON":"Spliter OFF");
+    }
+}
 class ControlRoom{
     private Alarm alarm;
     private Display display;
     private SMSSender sMSSender;
+    private Spliter sPliter;
     
     private int waterLevel;
     
@@ -34,6 +40,9 @@ class ControlRoom{
     public void addSMSSender(SMSSender sMSSender){
         this.sMSSender=sMSSender;
     }
+    public void addSpliter(Spliter spliter){
+        this.sPliter=spliter;
+    }
     
     public void setWaterLevel(int waterLevel){
         if(this.waterLevel!=waterLevel){
@@ -45,6 +54,7 @@ class ControlRoom{
         alarm.operateAlarm(waterLevel);
         display.display(waterLevel);
         sMSSender.sendSMS(waterLevel);
+        sPliter.operateSpliter(waterLevel);
     }
 }
 public class Demo {
@@ -53,6 +63,7 @@ public class Demo {
         controlRoom.addAlarm(new Alarm());
         controlRoom.addDisplay(new Display());
         controlRoom.addSMSSender(new SMSSender());
+        controlRoom.addSpliter(new Spliter());
         
         Random r=new Random();
         while(true){

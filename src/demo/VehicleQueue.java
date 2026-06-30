@@ -1,4 +1,4 @@
-
+/*
 package demo;
 public class VehicleQueue {
     private Node front;
@@ -125,5 +125,5 @@ class Demo{
     }
 }
 
-
+*/
 

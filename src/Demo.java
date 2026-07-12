@@ -1,68 +1,16 @@
-class Node{
-	int data;
-	Node next;
-	Node(int data){this.data=data;}
-}
-class Stack{
-	private Node top;
-	public void push(int data){
-		Node n1=new Node(data);
-		n1.next=top;
-		top=n1;
-		
-	}
-	public void pop(){
-		if(top!=null){
-			top=top.next;
-		}
-	}
-	public void printStack(){
-		System.out.print("[");
-		Node temp=top;
-		while(temp!=null){
-			System.out.print(temp.data+", ");
-			temp=temp.next;
-		}
-		System.out.println(isEmpty()?"empty]":"\b\b]");
-	}
-        public boolean isEmpty(){
-            return top==null;
-        }
-        
-        public int size(){
-            Node temp = top;
-            int count=0;
-            
-            while(temp!=null){
-                count++;
-                temp=temp.next;
-            }
-            return count;
-        }
-        
-        public void clear(){
-            top=null;
-        }
-}
+import java.util.*;
+import java.io.*;
 class Demo{
-	public static void main(String args[]){
-		Stack s1=new Stack();
-		s1.printStack();//[empty]
-		System.out.println("Size of the stack : "+s1.size()); //0
-		System.out.println("Stack is empty    : "+s1.isEmpty());//true
-		s1.push(100);
-		s1.push(200);
-		s1.push(300);
-		s1.push(400);
-		s1.push(500);
-		s1.printStack(); //[500, 400, 300, 200, 100]
-		System.out.println("Size of the stack : "+s1.size()); //5
-		System.out.println("Stack is empty    : "+s1.isEmpty());//false
-		
-		s1.clear();
-		s1.printStack();//[empty]
-		System.out.println("Size of the stack : "+s1.size()); //0
-		System.out.println("Stack is empty    : "+s1.isEmpty());//true
+	public static void main(String args[])throws IOException{
+	Scanner input=new Scanner(("Demo.java"));
+            
+            FileWriter fw = new FileWriter("demo.txt");
+            while(input.hasNext()){
+            String line = input.nextLine();
+            fw.write(line+"\n");
+            }
+            input.close();
+            fw.close();
 	}
 }
 

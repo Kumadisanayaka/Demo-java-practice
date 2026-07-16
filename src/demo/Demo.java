@@ -1,42 +1,46 @@
 package demo;
 
+import java.util.ArrayList;
 import java.util.Random;
 
-class Alarm{
-    public void operateAlarm(int waterLevel){
+class WaterLevelObserver{
+    public void update(int waterLavel){
+    
+    }
+}
+class Alarm extends WaterLevelObserver{
+    @Override
+    public void update(int waterLevel){
         System.out.println(waterLevel>=50?"Alarm ON":"Alarm OFF");
     }
 }
-class Display{
-    public void display(int waterLevel){
+class Spliter extends WaterLevelObserver{
+    @Override
+    public void update(int waterLevel){
+        System.out.println(waterLevel>=50?"Spliter ON":"Spliter OFF");
+    }
+}
+class Display extends WaterLevelObserver{
+    @Override
+    public void update(int waterLevel){
         System.out.println("Water Level : "+waterLevel);
     }
 }
 
-class SmsSender{
-    public void smsSender(int waterLevel){
+class SmsSender extends WaterLevelObserver{
+    @Override
+    public void update(int waterLevel){
         System.out.println(waterLevel>=50?"Warning : "+waterLevel:"Normal : "+waterLevel);
     }
 }
 
 class ControllRoom{
-    private Alarm alarm;
-    private Display display;
-    private SmsSender smsSender;
-    
+    private ArrayList<WaterLevelObserver> observerList = new ArrayList<>();
     private int waterLevel;
     
-    public void addAlarm(Alarm alarm){
-        this.alarm = alarm;
-    }
-    
-    public void addDisplay(Display display){
-        this.display = display;
-    }
-    
-    public void addSmsSender(SmsSender smsSender){
-        this.smsSender = smsSender;
-    }
+  public void addWaterLevelObserver(WaterLevelObserver waterLevelObserver){
+      observerList.add(waterLevelObserver);
+  }
     
     public void setWaterLevel(int waterLevel){
         if(this.waterLevel != waterLevel){
@@ -46,17 +50,20 @@ class ControllRoom{
     }
     
     public void notifyDevice(){
-        alarm.operateAlarm(waterLevel);
-        display.display(waterLevel);
-        smsSender.smsSender(waterLevel);
+        for (WaterLevelObserver waterLevelObserver : observerList) {
+            waterLevelObserver.update(waterLevel);
+        }
     }
 }
 class Demo{
     public static void main(String[] args) throws InterruptedException {
         ControllRoom controllRoom = new ControllRoom();
-        controllRoom.addAlarm(new Alarm());
-        controllRoom.addDisplay(new Display());
-        controllRoom.addSmsSender(new SmsSender());
+        controllRoom.addWaterLevelObserver(new Alarm());
+        controllRoom.addWaterLevelObserver(new Alarm());
+        controllRoom.addWaterLevelObserver(new Spliter());
+        controllRoom.addWaterLevelObserver(new Spliter());
+        controllRoom.addWaterLevelObserver(new Display());
+        controllRoom.addWaterLevelObserver(new SmsSender());
         
         Random r = new Random();
         while(true){
